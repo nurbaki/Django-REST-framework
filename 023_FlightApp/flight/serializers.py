@@ -27,7 +27,6 @@ class PassengerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Passenger
-        # fields = '__all__'
         exclude = (
             "created_time",
             "updated_time",
