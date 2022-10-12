@@ -41,7 +41,7 @@ class ReservationSerializer(serializers.ModelSerializer):
 
     # set relation IDs:
     flight_id = serializers.IntegerField()
-    user_id = serializers.IntegerField(write_only=True, required=False)
+    user_id = serializers.IntegerField(read_only=True, required=False)
 
     class Meta:
         model = Reservation
@@ -66,7 +66,7 @@ class ReservationSerializer(serializers.ModelSerializer):
 class FlightForStaffsSerializer(serializers.ModelSerializer):
 
     # ! "flight_reservations" name is related_name in models.
-    flight_reservations = ReservationSerializer(many=True, read_only=True)
+    flight_reservations = ReservationSerializer(many=True, write_only=True)
 
     class Meta:
         model = Flight
