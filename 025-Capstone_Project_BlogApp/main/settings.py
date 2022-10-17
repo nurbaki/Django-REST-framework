@@ -38,8 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #thirdparty apps
     'rest_framework',
     'drf_yasg',
+    'rest_framework.authtoken', # need for dj_rest_auth
+    'dj_rest_auth',
+    'users',
+    'blogapp',
 ]
 
 MIDDLEWARE = [
@@ -120,7 +125,18 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_ROOT = BASE_DIR / 'media_folder'
+
+# URL that handles the media served from MEDIA_ROOT
+MEDIA_URL = 'media_url/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+#     ]
+# }
