@@ -29,7 +29,11 @@ class StockSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Stock
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = (
+            "price_total",
+            "user",
+        )
 
 class FirmSerializer(serializers.ModelSerializer):
 
