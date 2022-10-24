@@ -1,4 +1,4 @@
-from unicodedata import category
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import (
     Profile,
@@ -54,13 +54,13 @@ class PostVNSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
-    like= LikeSerializer(many=True)
-    comment=CommentSerializer(many=True)
-    views=PostVNSerializer(many=True)
+    like= LikeSerializer(many=True, read_only= True)
+    comment=CommentSerializer(many=True, read_only= True)
+    views=PostVNSerializer(many=True, read_only= True)
     user=serializers.StringRelatedField()
-    category=serializers.StringRelatedField()
-    # status=serializers.SerializerMethodField() # bu ikinci ve uzun yöntem
-    status=serializers.CharField(source="get_status_display")
+    category_name=serializers.SerializerMethodField()
+    status_name=serializers.SerializerMethodField() # bu ikinci ve uzun yöntem
+    # status=serializers.CharField(source="get_status_display")
 
     class Meta:
         model = Post
@@ -68,16 +68,26 @@ class PostSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "user",
-            "category", 
+            "category",
+            "category_name", 
             "title", 
             "content", 
             "image_url", 
             "publish_date", 
             "last_updated", 
             "status",
+            "status_name",
             "like",
             "comment",
             "views",
         )
-    # def get_status(self, object):               # choises oldugu zaman bu sekilde isimler görunebilir. get_  dan sonra modeldeki field name olacak, sonrada _display
-    #     return object.get_status_display()
+    def get_status_name(self, object):               # choises oldugu zaman bu sekilde isimler görunebilir. get_  dan sonra modeldeki field name olacak, sonrada _display
+        return object.get_status_display()
+
+    def get_category_name(self, object):
+        return Category.objects.get(name=object.category).name
+
+    def create (self, validated_data):
+        user = User.objects.get(username=self.context["request"].user)
+        validated_data["user"] = user
+        return Post.objects.create(**validated_data)

@@ -61,9 +61,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 # ---------------------------------------------
 # TOKEN Override:
 
-# from dj_rest_auth.serializers import TokenSerializer
+from dj_rest_auth.serializers import TokenSerializer
 
-'''
 # Aşağıdaki Serializer user verisi içindir. Aynı datayı RegisterSerializer'dan çektik.
 class UserTokenSerializer(serializers.ModelSerializer):
 
@@ -75,15 +74,15 @@ class UserTokenSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
         )
-'''
 
-# class WideTokenSerializer(TokenSerializer):
 
-#     # user = UserTokenSerializer(read_only=True)
-#     user = RegisterSerializer(read_only=True)
+class WideTokenSerializer(TokenSerializer):
+
+    # user = UserTokenSerializer(read_only=True)
+    user = RegisterSerializer(read_only=True)
     
-#     class Meta(TokenSerializer.Meta):
-#         fields = (
-#             'key',
-#             'user'
-#         )
+    class Meta(TokenSerializer.Meta):
+        fields = (
+            'key',
+            'user'
+       )
