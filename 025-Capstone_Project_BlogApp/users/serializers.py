@@ -69,6 +69,7 @@ class UserTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
+            'id',
             'username',
             'email',
             'first_name',
@@ -78,8 +79,8 @@ class UserTokenSerializer(serializers.ModelSerializer):
 
 class WideTokenSerializer(TokenSerializer):
 
-    # user = UserTokenSerializer(read_only=True)
-    user = RegisterSerializer(read_only=True)
+    user = UserTokenSerializer(read_only=True)
+    # user = RegisterSerializer(read_only=True)
     
     class Meta(TokenSerializer.Meta):
         fields = (

@@ -58,6 +58,7 @@ class PostSerializer(serializers.ModelSerializer):
     comment=CommentSerializer(many=True, read_only= True)
     views=PostVNSerializer(many=True, read_only= True)
     user=serializers.StringRelatedField()
+    user_id=serializers.IntegerField(write_only=True)
     category_name=serializers.SerializerMethodField()
     status_name=serializers.SerializerMethodField() # bu ikinci ve uzun yöntem
     # status=serializers.CharField(source="get_status_display")
@@ -68,6 +69,7 @@ class PostSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "user",
+            "user_id",
             "category",
             "category_name", 
             "title", 
@@ -87,7 +89,7 @@ class PostSerializer(serializers.ModelSerializer):
     def get_category_name(self, object):
         return Category.objects.get(name=object.category).name
 
-    def create (self, validated_data):
-        user = User.objects.get(username=self.context["request"].user)
-        validated_data["user"] = user
-        return Post.objects.create(**validated_data)
+    # def create (self, validated_data):
+    #     user = User.objects.get(username=validated_data["user"])
+    #     validated_data["user"] = user.id
+    #     return Post.objects.create(**validated_data)
